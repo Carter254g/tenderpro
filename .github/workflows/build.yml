@@ -60,11 +60,11 @@ jobs:
       - name: Build APK
         run: |
           flutter build apk --release \
-            --dart-define=ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            --dart-define=GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
       - name: Build AAB
         run: |
           flutter build appbundle --release \
-            --dart-define=ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            --dart-define=GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -98,7 +98,7 @@ jobs:
       - name: Build iOS
         run: |
           flutter build ios --release --no-codesign \
-            --dart-define=ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            --dart-define=GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
       - name: Upload iOS artifact
         uses: actions/upload-artifact@v4
         with:
@@ -127,7 +127,7 @@ jobs:
         run: |
           flutter build web --release \
             --web-renderer canvaskit \
-            --dart-define=ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+            --dart-define=GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
       - name: Upload web artifact
         uses: actions/upload-artifact@v4
         with:
