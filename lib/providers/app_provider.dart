@@ -146,7 +146,16 @@ class AppProvider extends ChangeNotifier {
     _setLoading(true);
     _clearError();
     try {
+      final ext = fileName.toLowerCase().split('.').last;
+      if (ext == 'pdf' || ext == 'docx' || ext == 'doc') {
+        _setError(
+          'Only plain text (.txt) files are supported for extraction. '
+          'Please copy your tender content as text and use the text input instead.',
+        );
+        return [];
+      }
       final text = utf8.decode(bytes, allowMalformed: true);
+      if (text.trim().isEmpty) throw Exception('File appears to be empty.');
       return await _callGeminiApi(userText: text);
     } catch (e) {
       _setError('File extraction failed: ${e.toString()}');
@@ -232,7 +241,10 @@ class AppProvider extends ChangeNotifier {
         if (_projects.isNotEmpty) _activeProject = _projects.first;
         notifyListeners();
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Failed to load projects: $e');
+      _setError('Could not load saved projects. Your data may be corrupted.');
+    }
   }
 
   Future<void> _saveProjects() async {
@@ -242,7 +254,10 @@ class AppProvider extends ChangeNotifier {
         'projects',
         jsonEncode(_projects.map((p) => p.toJson()).toList()),
       );
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Failed to save projects: $e');
+      _setError('Could not save projects. Changes may be lost.');
+    }
   }
 
   void seedDemoData() {

@@ -1,4 +1,4 @@
-PopupMenuEntry<ProjectStatus>// lib/screens/projects_screen.dart
+// lib/screens/projects_screen.dart
 // Projects list — manage and navigate all projects
 
 import 'package:flutter/material.dart';
@@ -371,6 +371,48 @@ class _ProjectCard extends StatelessWidget {
     required this.onStatusChange,
   });
 
+  void _showStatusSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Change Status',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 12),
+            ...ProjectStatus.values.map((s) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Radio<ProjectStatus>(
+                value: s,
+                groupValue: project.status,
+                activeColor: AppColors.primary,
+                onChanged: (val) {
+                  if (val != null) onStatusChange(val);
+                  Navigator.pop(ctx);
+                },
+              ),
+              title: Text(s.label),
+              onTap: () {
+                onStatusChange(s);
+                Navigator.pop(ctx);
+              },
+            )),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
   Color get _statusColor {
     switch (project.status) {
       case ProjectStatus.active: return AppColors.success;
@@ -465,21 +507,13 @@ class _ProjectCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                PopupMenuButton<String>(
+                Builder(
+                  builder: (ctx) => PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert, size: 18, color: AppColors.textMuted),
                   itemBuilder: (_) => [
                     const PopupMenuItem(value: 'open', child: Text('Open BOQ')),
                     const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                    PopupMenuButton<ProjectStatus>(
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-                        child: Text('Change Status'),
-                      ),
-                      itemBuilder: (_) => ProjectStatus.values
-                          .map((s) => PopupMenuItem(value: s, child: Text(s.label)))
-                          .toList(),
-                      onSelected: onStatusChange,
-                    ),
+                    const PopupMenuItem(value: 'status', child: Text('Change Status')),
                     const PopupMenuDivider(),
                     const PopupMenuItem(
                       value: 'delete',
@@ -490,7 +524,9 @@ class _ProjectCard extends StatelessWidget {
                     if (val == 'open') onOpen();
                     if (val == 'edit') onEdit();
                     if (val == 'delete') onDelete();
+                    if (val == 'status') _showStatusSheet(ctx);
                   },
+                ),
                 ),
               ],
             ),

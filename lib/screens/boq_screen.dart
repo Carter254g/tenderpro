@@ -227,7 +227,7 @@ class _BoqScreenState extends State<BoqScreen> {
             child: ElevatedButton.icon(
               onPressed: project.boqItems.isEmpty
                   ? null
-                  : () => widget.onNavigate(3),
+                  : () => widget.onNavigate(99),
               icon: const Icon(Icons.receipt_long_outlined, size: 18),
               label: const Text('Generate Quotation'),
               style: ElevatedButton.styleFrom(
