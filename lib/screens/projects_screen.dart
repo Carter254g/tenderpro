@@ -1,4 +1,4 @@
-// lib/screens/projects_screen.dart
+PopupMenuEntry<ProjectStatus>// lib/screens/projects_screen.dart
 // Projects list — manage and navigate all projects
 
 import 'package:flutter/material.dart';
