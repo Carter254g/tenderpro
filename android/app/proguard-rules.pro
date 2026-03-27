@@ -12,3 +12,5 @@
 # OkHttp / http package
 -dontwarn okhttp3.**
 -dontwarn okio.**
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }

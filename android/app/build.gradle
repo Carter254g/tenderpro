@@ -24,7 +24,7 @@ if (keystorePropertiesFile.exists()) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply from: "/Users/apple/development/flutter/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.tenderpro.tenderpro_ai"
